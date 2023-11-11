@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
 
 import { cn } from '@/utils/cn'
 
@@ -66,36 +65,32 @@ const FirstPage = () => {
           'absolute',
           'min-w-full min-h-full aspect-[1.5/1]',
           'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
-          //   'w-[50vw] aspect-[1.5/1]',
-          //   'border-2 border-pink-500 overflow-hidden'
         )}
       >
-        {images.map((image, idx) =>
-          idx !== -1 ? (
+        {images.map((image, idx) => (
+          <div
+            key={idx}
+            className={cn('absolute top-0 w-[45%]', 'animate-jump')}
+            style={{
+              top: image.pos.top + '%',
+              left: image.pos.left + '%',
+              animationDelay: `${-0.1 * idx}s`,
+            }}
+          >
             <div
-              key={idx}
-              className={cn('absolute top-0 w-[45%]', 'animate-jump')}
-              style={{
-                top: image.pos.top + '%',
-                left: image.pos.left + '%',
-                animationDelay: `${-0.1 * idx}s`,
-              }}
+              className={cn(
+                'absolute w-full -translate-x-1/2 -translate-y-1/2'
+              )}
             >
-              <div
-                className={cn(
-                  'absolute w-full -translate-x-1/2 -translate-y-1/2'
-                )}
-              >
-                <Image
-                  src={image.src}
-                  alt=""
-                  className="w-full h-auto"
-                  priority
-                />
-              </div>
+              <Image
+                src={image.src}
+                alt=""
+                className="w-full h-auto"
+                priority
+              />
             </div>
-          ) : null
-        )}
+          </div>
+        ))}
       </div>
     </div>
   )
