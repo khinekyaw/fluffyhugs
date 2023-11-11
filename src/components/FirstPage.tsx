@@ -67,19 +67,13 @@ const FirstPage = () => {
           'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
         )}
       >
-        {images.map((image, idx) => (
-          <div
-            key={idx}
-            className={cn('absolute top-0 w-[45%]', 'animate-jump')}
-            style={{
-              top: image.pos.top + '%',
-              left: image.pos.left + '%',
-              animationDelay: `${-0.1 * idx}s`,
-            }}
-          >
+        {images.map((image, idx) =>
+          idx === 13 ? (
             <div
+              key={idx}
               className={cn(
-                'absolute w-full -translate-x-1/2 -translate-y-1/2'
+                'absolute top-0 w-[45%] left-1/2 -translate-x-1/2'
+                //  'animate-jump'
               )}
             >
               <Image
@@ -89,8 +83,30 @@ const FirstPage = () => {
                 priority
               />
             </div>
-          </div>
-        ))}
+          ) : // <div
+          //   key={idx}
+          //   className={cn('absolute top-0 w-[45%]', 'animate-jump')}
+          //   style={{
+          //     top: image.pos.top + '%',
+          //     left: image.pos.left + '%',
+          //     animationDelay: `${-0.1 * idx}s`,
+          //   }}
+          // >
+          //   <div
+          //     className={cn(
+          //       'absolute w-full -translate-x-1/2 -translate-y-1/2'
+          //     )}
+          //   >
+          //     <Image
+          //       src={image.src}
+          //       alt=""
+          //       className="w-full h-auto"
+          //       priority
+          //     />
+          //   </div>
+          // </div>
+          null
+        )}
       </div>
     </div>
   )
