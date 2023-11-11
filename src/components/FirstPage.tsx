@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import Image from 'next/image'
 
 import { cn } from '@/utils/cn'
@@ -20,6 +20,7 @@ import Human13Image from '../assets/images/img13.webp'
 import Human14Image from '../assets/images/img14.webp'
 import Human15Image from '../assets/images/img15.webp'
 import Human16Image from '../assets/images/img16.webp'
+import gsap from 'gsap'
 
 const OFFSET_Y = 10
 const OFFSET_X = 4
@@ -58,8 +59,64 @@ let images = [
 ]
 
 const FirstPage = () => {
+  const page = useRef(0)
+
+  const pageChange = () => {
+    const mcAnimations = [
+      {
+        rotateZ: 0,
+        scale: 1,
+        y: '13vh',
+        x: '0',
+      },
+      {
+        rotateZ: -90,
+        scale: 0.46,
+        y: '-25vh',
+        x: '0',
+      },
+      {
+        rotateZ: 0,
+        scale: 0.4,
+        x: '-22vw',
+        y: '-12vh',
+      },
+    ]
+
+    const humanAnimations = [
+      {
+        x: 0,
+        y: 0,
+      },
+      {
+        y: '100vh',
+        x: '100vw',
+      },
+    ]
+
+    if ([0, 1].includes(page.current)) {
+      gsap.to('.human', {
+        ...humanAnimations[page.current],
+        duration: 0.6,
+        stagger: 0.01,
+        ease: 'power1.inOut',
+      })
+    }
+
+    gsap.to('.mc', {
+      ...mcAnimations[page.current],
+      duration: 0.6,
+      ease: 'power1.inOut',
+    })
+
+    page.current = page.current + 1
+    if (page.current > 3) {
+      page.current = 0
+    }
+  }
+
   return (
-    <div className="w-full h-full relative bg-pink-100">
+    <div className="w-full h-full relative bg-pink-100" onClick={pageChange}>
       <div
         className={cn(
           'absolute',
@@ -67,45 +124,51 @@ const FirstPage = () => {
           'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'
         )}
       >
-        {images.map((image, idx) =>
-          idx === 13 ? (
-            <div
-              key={idx}
-              className={cn(
-                'absolute top-0 w-[45%] left-1/2 -translate-x-1/2'
-                //  'animate-jump'
-              )}
-            >
-              <Image
-                src={image.src}
-                alt=""
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          ) : // <div
-          //   key={idx}
-          //   className={cn('absolute top-0 w-[45%]', 'animate-jump')}
-          //   style={{
-          //     top: image.pos.top + '%',
-          //     left: image.pos.left + '%',
-          //     animationDelay: `${-0.1 * idx}s`,
-          //   }}
-          // >
-          //   <div
-          //     className={cn(
-          //       'absolute w-full -translate-x-1/2 -translate-y-1/2'
-          //     )}
-          //   >
-          //     <Image
-          //       src={image.src}
-          //       alt=""
-          //       className="w-full h-auto"
-          //       priority
-          //     />
-          //   </div>
-          // </div>
-          null
+        {images.map(
+          (image, idx) =>
+            idx === 13 ? (
+              <div
+                key={idx}
+                className={cn(
+                  'absolute top-0 w-[45%] left-1/2 -translate-x-1/2 mc translate-y-[13vh]'
+                  //  'animate-jump'
+                )}
+              >
+                <Image
+                  src={image.src}
+                  alt=""
+                  className="w-full h-auto"
+                  priority
+                />
+              </div>
+            ) : (
+              <div
+                key={idx}
+                className={cn(
+                  'absolute top-0 w-[45%] human'
+                  //  'animate-jump'
+                )}
+                style={{
+                  top: image.pos.top + '%',
+                  left: image.pos.left + '%',
+                  animationDelay: `${-0.1 * idx}s`,
+                }}
+              >
+                <div
+                  className={cn(
+                    'absolute w-full -translate-x-1/2 -translate-y-1/2'
+                  )}
+                >
+                  <Image
+                    src={image.src}
+                    alt=""
+                    className="w-full h-auto"
+                    priority
+                  />
+                </div>
+              </div>
+            )
+          // null
         )}
       </div>
     </div>
