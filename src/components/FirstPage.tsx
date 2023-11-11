@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import Image from 'next/image'
+import gsap from 'gsap'
 
 import { cn } from '@/utils/cn'
 
@@ -20,7 +21,11 @@ import Human13Image from '../assets/images/img13.webp'
 import Human14Image from '../assets/images/img14.webp'
 import Human15Image from '../assets/images/img15.webp'
 import Human16Image from '../assets/images/img16.webp'
-import gsap from 'gsap'
+
+import LogoImage from '../assets/images/logo.webp'
+import DiscordImage from '../assets/images/discord.svg'
+import OpeanseaImage from '../assets/images/opensea.svg'
+import TwitterImage from '../assets/images/twitter.svg'
 
 const OFFSET_Y = 10
 const OFFSET_X = 4
@@ -94,6 +99,18 @@ const FirstPage = () => {
       },
     ]
 
+    const logoAnimations = [
+      {
+        opacity: 1,
+      },
+      {
+        opacity: 0,
+      },
+      {
+        opacity: 1,
+      },
+    ]
+
     if ([0, 1].includes(page.current)) {
       gsap.to('.human', {
         ...humanAnimations[page.current],
@@ -102,6 +119,12 @@ const FirstPage = () => {
         ease: 'power1.inOut',
       })
     }
+
+    gsap.to('.logo', {
+      ...logoAnimations[page.current],
+      duration: 0.4,
+      ease: 'power1.inOut',
+    })
 
     gsap.to('.mc', {
       ...mcAnimations[page.current],
@@ -170,6 +193,41 @@ const FirstPage = () => {
             )
           // null
         )}
+      </div>
+
+      <div className="w-full h-full absolute left-0 right-0">
+        <Image
+          src={LogoImage}
+          alt="Logo"
+          className="absolute top-10 left-10 w-[30vw] max-w-[380px] logo"
+        />
+
+        <div className="absolute bottom-10 left-10 flex space-x-5">
+          <a href="#" target="_blank">
+            <Image
+              src={DiscordImage}
+              alt="Discord"
+              className={cn('w-10 h-10', 'transition hover:scale-95')}
+            />
+          </a>
+          <a href="#" target="_blank">
+            <Image
+              src={OpeanseaImage}
+              alt="Opeansea"
+              className={cn('w-10 h-10', 'transition hover:scale-95')}
+            />
+          </a>
+          <a href="#" target="_blank">
+            <Image
+              src={TwitterImage}
+              alt="Twitter"
+              className={cn(
+                'w-10 h-10',
+                'transition duration-300 hover:scale-95'
+              )}
+            />
+          </a>
+        </div>
       </div>
     </div>
   )
