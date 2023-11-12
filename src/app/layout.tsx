@@ -5,8 +5,16 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://fluffyhugs-alpha.vercel.app'),
   title: 'Fluffy HUGS NFT',
-  description: 'Fluffy hugs description',
+  description:
+    'ふわふわのどうぶつたちに、囲まれて暮らしたい。ペットや動物が大好きなあなたのためのコミュニティ。 FluffyHUGSは、「大好きな動物と一緒に、あなたらしさを表現する」ことをコンセプトに3,333体のジェネラティブアートNFTで構成され、世界中にコミュニティの輪を広げて参ります。',
+  openGraph: {
+    title: 'Fluffy HUGS NFT',
+    description:
+      'ふわふわのどうぶつたちに、囲まれて暮らしたい。ペットや動物が大好きなあなたのためのコミュニティ。 FluffyHUGSは、「大好きな動物と一緒に、あなたらしさを表現する」ことをコンセプトに3,333体のジェネラティブアートNFTで構成され、世界中にコミュニティの輪を広げて参ります',
+    images: ['/ogp.png'],
+  },
 }
 
 export default function RootLayout({
