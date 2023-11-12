@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
 
@@ -66,11 +66,14 @@ let images = [
 
 const FirstPage = () => {
   const page = useRef(0)
+  const animating = useRef(false)
 
-  const pageChange = () => {
-    page.current = page.current + 1
+  const pageChange = (opt = 1) => {
+    page.current = page.current + opt
     if (page.current >= 3) {
       page.current = 0
+    } else if (page.current < 0) {
+      page.current = 2
     }
 
     const mcAnimations = [
@@ -78,19 +81,19 @@ const FirstPage = () => {
         rotateZ: 0,
         scale: 1,
         y: '13vh',
-        x: '-50%',
+        xPercent: -50,
       },
       {
         rotateZ: -90,
         scale: 0.46,
         y: '-25vh',
-        x: '-50%',
+        xPercent: -50,
       },
       {
         rotateZ: 0,
         scale: 0.4,
-        x: '-90%',
         y: '-12vh',
+        xPercent: -100,
       },
     ]
 
@@ -98,6 +101,10 @@ const FirstPage = () => {
       {
         x: 0,
         y: 0,
+      },
+      {
+        y: '100vh',
+        x: '100vw',
       },
       {
         y: '100vh',
@@ -141,14 +148,12 @@ const FirstPage = () => {
       },
     ]
 
-    if ([0, 1].includes(page.current)) {
-      gsap.to('.human', {
-        ...humanAnimations[page.current],
-        duration: 0.6,
-        stagger: 0.01,
-        ease: 'power1.inOut',
-      })
-    }
+    gsap.to('.human', {
+      ...humanAnimations[page.current],
+      duration: 0.6,
+      stagger: 0.01,
+      ease: 'power1.inOut',
+    })
 
     gsap.to('.jp-text', {
       ...jpTextAnimations[page.current],
@@ -173,11 +178,32 @@ const FirstPage = () => {
       ...mcAnimations[page.current],
       duration: 0.6,
       ease: 'power1.inOut',
+      onComplete: () => {
+        animating.current = false
+      },
     })
   }
 
+  const handleWheel = (e: React.WheelEvent) => {
+    if (animating.current) return
+
+    console.log(e.deltaY)
+
+    if (e.deltaY > 0) {
+      animating.current = true
+      pageChange(1)
+    } else {
+      animating.current = true
+      pageChange(-1)
+    }
+  }
+
   return (
-    <div className="w-full h-full relative bg-[#fcf6ec]" onClick={pageChange}>
+    <div
+      className="w-full h-full relative bg-[#fcf6ec] overflow-hidden"
+      // onClick={pageChange}
+      onWheel={handleWheel}
+    >
       <div className="absolute animate-moveUp">
         <Image src={BgImage} alt="Bg" className="w-screen aspect-square" />
         <Image src={BgImage} alt="Bg" className="w-screen aspect-square" />
@@ -203,7 +229,7 @@ const FirstPage = () => {
               <div
                 key={idx}
                 className={cn(
-                  'absolute top-0 w-[45%] left-1/2 -translate-x-1/2 mc translate-y-[13vh]'
+                  'mc absolute top-0 w-[45%] left-1/2 translate-y-[13vh] -translate-x-1/2'
                   //  'animate-jump'
                 )}
               >
@@ -280,7 +306,7 @@ const FirstPage = () => {
         </div>
       </div>
 
-      <div className="absolute text-[#374a91] font-semibold text-2xl tracking-[1.4rem] right-20 top-1/3 jp-text opacity-0">
+      <div className="absolute text-[#374a91] font-semibold text-2xl tracking-[1.6rem] right-20 top-[40%] jp-text opacity-0">
         <p className="mb-5">ふわふわの動物たちに、</p>
         <p className="mb-10">囲まれて暮らしたい</p>
         <p>ペットや動物が大好きなあなたへ</p>

@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-three/drei": "^9.88.13",
     "@react-three/fiber": "^8.15.10",
+    "@smakss/react-scroll-direction": "^3.1.1",
     "@types/three": "^0.158.2",
     "framer-motion": "^10.16.4",
     "gsap": "^3.12.2",
