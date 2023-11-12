@@ -29,7 +29,6 @@ import TwitterImage from '../assets/images/twitter.svg'
 
 import BgImage from '../assets/images/bg-2.png'
 
-const OFFSET_Y = 10
 const OFFSET_X = 4
 
 let images = [
@@ -66,9 +65,14 @@ let images = [
 ]
 
 const FirstPage = () => {
-  const page = useRef(1)
+  const page = useRef(0)
 
   const pageChange = () => {
+    page.current = page.current + 1
+    if (page.current >= 3) {
+      page.current = 0
+    }
+
     const mcAnimations = [
       {
         rotateZ: 0,
@@ -170,11 +174,6 @@ const FirstPage = () => {
       duration: 0.6,
       ease: 'power1.inOut',
     })
-
-    page.current = page.current + 1
-    if (page.current >= 3) {
-      page.current = 0
-    }
   }
 
   return (
