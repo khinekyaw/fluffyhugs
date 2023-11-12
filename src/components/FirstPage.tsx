@@ -75,6 +75,8 @@ const FirstPage = () => {
       isMobile.current = window.innerWidth < 768
     }
 
+    handleResize()
+
     window.addEventListener('resize', handleResize)
 
     return () => {
