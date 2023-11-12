@@ -70,21 +70,10 @@ const FirstPage = () => {
   const animating = useRef(false)
   const isMobile = useRef(false)
 
-  useEffect(() => {
-    const handleResize = () => {
-      isMobile.current = window.innerWidth < 768
-    }
-
-    handleResize()
-
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
-
   const pageChange = (opt = 1) => {
+    // console.log('ismobile:', isMobile)
+    // alert(`Is :${isMobile.current}`)
+
     page.current = page.current + opt
     if (page.current >= 3) {
       page.current = 0
@@ -112,6 +101,8 @@ const FirstPage = () => {
         xPercent: isMobile.current ? -50 : -100,
       },
     ]
+
+    // console.log(mcAnimations)
 
     const humanAnimations = [
       {
@@ -200,8 +191,25 @@ const FirstPage = () => {
     })
   }
 
+  useEffect(() => {
+    const handleResize = () => {
+      isMobile.current = window.innerWidth <= 820
+    }
+
+    handleResize()
+    pageChange(0)
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
+
   const handleWheel = (e: React.WheelEvent) => {
     if (animating.current) return
+
+    // console.log('wheel')
 
     if (e.deltaY > 0) {
       animating.current = true
@@ -242,11 +250,22 @@ const FirstPage = () => {
       onTouchMove={handleTouchMove}
     >
       <div className="absolute animate-moveUp">
-        <Image src={BgImage} alt="Bg" className="w-screen aspect-square" />
-        <Image src={BgImage} alt="Bg" className="w-screen aspect-square" />
+        <Image
+          priority
+          src={BgImage}
+          alt="Bg"
+          className="w-screen aspect-square"
+        />
+        <Image
+          priority
+          src={BgImage}
+          alt="Bg"
+          className="w-screen aspect-square"
+        />
       </div>
       <div>
         <Image
+          priority
           src={LogoImage}
           alt="Logo"
           className="absolute opacity-0 -translate-y-1/2 top-[40vh] left-1/2 -translate-x-1/2 w-[84vw] huge-logo"
@@ -266,7 +285,7 @@ const FirstPage = () => {
               <div
                 key={idx}
                 className={cn(
-                  'mc absolute top-0 w-[45%] left-1/2 translate-y-[13vh] -translate-x-1/2'
+                  'mc absolute top-0 w-[45%] left-1/2 translate-y-[13vh]'
                 )}
               >
                 <Image
@@ -309,6 +328,7 @@ const FirstPage = () => {
           src={LogoImage}
           alt="Logo"
           className="absolute left-8 top-8 lg:top-10 lg:left-10 w-[40vw] lg:w-[30vw] max-w-[380px] logo"
+          priority
         />
 
         <div className="absolute bottom-8 left-8 lg:left-10 flex space-x-5">
