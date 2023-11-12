@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from 'react'
+'use client'
+import React, { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
 
@@ -67,6 +68,19 @@ let images = [
 const FirstPage = () => {
   const page = useRef(0)
   const animating = useRef(false)
+  const isMobile = useRef(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      isMobile.current = window.innerWidth < 768
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   const pageChange = (opt = 1) => {
     page.current = page.current + opt
@@ -85,15 +99,15 @@ const FirstPage = () => {
       },
       {
         rotateZ: -90,
-        scale: 0.46,
+        scale: isMobile.current ? 0.3 : 0.46,
         y: '-25vh',
         xPercent: -50,
       },
       {
         rotateZ: 0,
-        scale: 0.4,
-        y: '-12vh',
-        xPercent: -100,
+        scale: isMobile.current ? 0.3 : 0.4,
+        y: isMobile.current ? '0vh' : '-12vh',
+        xPercent: isMobile.current ? -50 : -100,
       },
     ]
 
@@ -103,12 +117,12 @@ const FirstPage = () => {
         y: 0,
       },
       {
-        y: '100vh',
-        x: '100vw',
+        y: '112vh',
+        x: '112vw',
       },
       {
-        y: '100vh',
-        x: '100vw',
+        y: '112vh',
+        x: '112vw',
       },
     ]
 
@@ -187,8 +201,6 @@ const FirstPage = () => {
   const handleWheel = (e: React.WheelEvent) => {
     if (animating.current) return
 
-    console.log(e.deltaY)
-
     if (e.deltaY > 0) {
       animating.current = true
       pageChange(1)
@@ -253,27 +265,22 @@ const FirstPage = () => {
                 key={idx}
                 className={cn(
                   'mc absolute top-0 w-[45%] left-1/2 translate-y-[13vh] -translate-x-1/2'
-                  //  'animate-jump'
                 )}
               >
                 <Image
                   src={image.src}
                   alt=""
-                  className="w-full h-auto"
+                  className="w-full h-auto animate-jump"
                   priority
                 />
               </div>
             ) : (
               <div
                 key={idx}
-                className={cn(
-                  'absolute top-0 w-[45%] human'
-                  //  'animate-jump'
-                )}
+                className={cn('absolute top-0 w-[45%] human')}
                 style={{
                   top: image.pos.top + '%',
                   left: image.pos.left + '%',
-                  animationDelay: `${-0.1 * idx}s`,
                 }}
               >
                 <div
@@ -284,7 +291,8 @@ const FirstPage = () => {
                   <Image
                     src={image.src}
                     alt=""
-                    className="w-full h-auto"
+                    className="w-full h-auto animate-jump"
+                    style={{ animationDelay: `${-0.1 * idx}s` }}
                     priority
                   />
                 </div>
@@ -298,10 +306,10 @@ const FirstPage = () => {
         <Image
           src={LogoImage}
           alt="Logo"
-          className="absolute top-10 left-10 w-[30vw] max-w-[380px] logo"
+          className="absolute left-8 top-8 lg:top-10 lg:left-10 w-[40vw] lg:w-[30vw] max-w-[380px] logo"
         />
 
-        <div className="absolute bottom-8 left-10 flex space-x-5">
+        <div className="absolute bottom-8 left-8 lg:left-10 flex space-x-5">
           <a href="#" target="_blank">
             <Image
               src={DiscordImage}
@@ -329,7 +337,7 @@ const FirstPage = () => {
         </div>
       </div>
 
-      <div className="absolute text-[#374a91] font-semibold text-2xl tracking-[1.6rem] right-20 top-[40%] jp-text opacity-0">
+      <div className="absolute text-[#374a91] font-semibold text-sm lg:text-2xl tracking-[1rem] lg:tracking-[1.6rem] left-[10vw] lg:left-[55vw] top-[20%] lg:top-[40%] jp-text opacity-0">
         <p className="mb-5">ふわふわの動物たちに、</p>
         <p className="mb-10">囲まれて暮らしたい</p>
         <p>ペットや動物が大好きなあなたへ</p>
