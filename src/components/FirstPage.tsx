@@ -29,6 +29,7 @@ import OpeanseaImage from '../assets/images/opensea.svg'
 import TwitterImage from '../assets/images/twitter.svg'
 
 import BgImage from '../assets/images/bg-2.png'
+import BgMbImage from '../assets/images/bg-mb.png'
 
 const OFFSET_X = 4
 
@@ -254,13 +255,25 @@ const FirstPage = () => {
           priority
           src={BgImage}
           alt="Bg"
-          className="w-screen aspect-square"
+          className="w-screen aspect-square hidden lg:block"
         />
         <Image
           priority
           src={BgImage}
           alt="Bg"
-          className="w-screen aspect-square"
+          className="w-screen aspect-square hidden lg:block"
+        />
+        <Image
+          priority
+          src={BgMbImage}
+          alt="Bg"
+          className="w-screen block lg:hidden"
+        />
+        <Image
+          priority
+          src={BgMbImage}
+          alt="Bg"
+          className="w-screen block lg:hidden"
         />
       </div>
       <div>
