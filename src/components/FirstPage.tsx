@@ -198,11 +198,34 @@ const FirstPage = () => {
     }
   }
 
+  const prevClientY = useRef(0)
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0]
+    prevClientY.current = touch.clientY
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    const touch = e.touches[0]
+
+    if (animating.current) return
+
+    if (touch.clientY < prevClientY.current) {
+      animating.current = true
+      pageChange(1)
+    } else {
+      animating.current = true
+      pageChange(-1)
+    }
+  }
+
   return (
     <div
       className="w-full h-full relative bg-[#fcf6ec] overflow-hidden"
       // onClick={pageChange}
       onWheel={handleWheel}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
     >
       <div className="absolute animate-moveUp">
         <Image src={BgImage} alt="Bg" className="w-screen aspect-square" />
