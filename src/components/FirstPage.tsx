@@ -27,6 +27,8 @@ import DiscordImage from '../assets/images/discord.svg'
 import OpeanseaImage from '../assets/images/opensea.svg'
 import TwitterImage from '../assets/images/twitter.svg'
 
+import BgImage from '../assets/images/bg-2.png'
+
 const OFFSET_Y = 10
 const OFFSET_X = 4
 
@@ -64,7 +66,7 @@ let images = [
 ]
 
 const FirstPage = () => {
-  const page = useRef(0)
+  const page = useRef(1)
 
   const pageChange = () => {
     const mcAnimations = [
@@ -72,18 +74,18 @@ const FirstPage = () => {
         rotateZ: 0,
         scale: 1,
         y: '13vh',
-        x: '0',
+        x: '-50%',
       },
       {
         rotateZ: -90,
         scale: 0.46,
         y: '-25vh',
-        x: '0',
+        x: '-50%',
       },
       {
         rotateZ: 0,
         scale: 0.4,
-        x: '-22vw',
+        x: '-90%',
         y: '-12vh',
       },
     ]
@@ -111,6 +113,30 @@ const FirstPage = () => {
       },
     ]
 
+    const hugeLogoAnimations = [
+      {
+        opacity: 0,
+      },
+      {
+        opacity: 1,
+      },
+      {
+        opacity: 0,
+      },
+    ]
+
+    const jpTextAnimations = [
+      {
+        opacity: 0,
+      },
+      {
+        opacity: 0,
+      },
+      {
+        opacity: 1,
+      },
+    ]
+
     if ([0, 1].includes(page.current)) {
       gsap.to('.human', {
         ...humanAnimations[page.current],
@@ -120,9 +146,22 @@ const FirstPage = () => {
       })
     }
 
+    gsap.to('.jp-text', {
+      ...jpTextAnimations[page.current],
+      duration: 0.4,
+      ease: 'power1.inOut',
+    })
+
     gsap.to('.logo', {
       ...logoAnimations[page.current],
       duration: 0.4,
+      ease: 'power1.inOut',
+    })
+
+    gsap.to('.huge-logo', {
+      ...hugeLogoAnimations[page.current],
+      duration: 0.4,
+      delay: page.current === 1 ? 0.4 : 0,
       ease: 'power1.inOut',
     })
 
@@ -133,13 +172,25 @@ const FirstPage = () => {
     })
 
     page.current = page.current + 1
-    if (page.current > 3) {
+    if (page.current >= 3) {
       page.current = 0
     }
   }
 
   return (
-    <div className="w-full h-full relative bg-pink-100" onClick={pageChange}>
+    <div className="w-full h-full relative bg-[#fcf6ec]" onClick={pageChange}>
+      <div className="absolute animate-moveUp">
+        <Image src={BgImage} alt="Bg" className="w-screen aspect-square" />
+        <Image src={BgImage} alt="Bg" className="w-screen aspect-square" />
+      </div>
+      <div>
+        <Image
+          src={LogoImage}
+          alt="Logo"
+          className="absolute opacity-0 -translate-y-1/2 top-[40vh] left-1/2 -translate-x-1/2 w-[84vw] huge-logo"
+        />
+      </div>
+
       <div
         className={cn(
           'absolute',
@@ -202,7 +253,7 @@ const FirstPage = () => {
           className="absolute top-10 left-10 w-[30vw] max-w-[380px] logo"
         />
 
-        <div className="absolute bottom-10 left-10 flex space-x-5">
+        <div className="absolute bottom-8 left-10 flex space-x-5">
           <a href="#" target="_blank">
             <Image
               src={DiscordImage}
@@ -228,6 +279,12 @@ const FirstPage = () => {
             />
           </a>
         </div>
+      </div>
+
+      <div className="absolute text-[#374a91] font-semibold text-2xl tracking-[1.4rem] right-20 top-1/3 jp-text opacity-0">
+        <p className="mb-5">ふわふわの動物たちに、</p>
+        <p className="mb-10">囲まれて暮らしたい</p>
+        <p>ペットや動物が大好きなあなたへ</p>
       </div>
     </div>
   )
